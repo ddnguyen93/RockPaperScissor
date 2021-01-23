@@ -5,22 +5,40 @@
   <title>Rock Paper Scissors</title>
 </head>
 <body>
+    <div class = "choices">
+        <div>
+            <button id = "rock">Rock</button>
+        </div>
+        <div>
+            <button id = "paper">Paper</button>
+        </div>
+        <div>
+            <button id = "scissors">Scissors</button>
+        </div>
+    </div>
+    <div>
+        <button id = 'Reset'>Reset Game</button>
+    </div>
+    <div id = "container"></div>
+
 
   <script>
     let option = ["Rock", "Paper", "Scissors"];
+    let computerScore = 0;
+    let playerScore = 0;
 
-    function computerPlay() {
+    function playerPlays(selection) {
+      game(selection);
+      if (computerScore == 5 || playerScore == 5) {
+          computerScore = 0;
+          playerScore = 0;
+      }
+      return;
+    }
+    function computerPlays() {
       let computerChoice = option[Math.floor(Math.random()*option.length)];
       return computerChoice;
     }
-
-    function playerPlay() {
-      let playerChoice = window.prompt("Rock, Paper or Scissors?");
-      return playerChoice;
-    }
-
-    //const playerSelection = playerPlay();
-    //const computerSelction = computerPlay();
 
     function playRound(playerSelection, computerSelection) {
         let result = "";
@@ -41,13 +59,9 @@
         }
         return result;
     } 
-    
-    function game() {
-        let computerScore = 0;
-        let playerScore = 0;
-        while (playerScore < 5 && computerScore < 5 ){
-            const playerSelection = playerPlay();
-            const computerSelection = computerPlay();    
+
+    function game(playerSelection) {
+            const computerSelection = computerPlays();    
             let Winner = playRound(playerSelection, computerSelection);
             if (Winner == "Player Wins") {
                 playerScore++;
@@ -56,15 +70,27 @@
             } else {
                 ;
             }
-            console.log(Winner + " Score: " + playerScore + "-" + computerScore)
-        }
+            console.log(Winner + " Score: " + playerScore + "-" + computerScore);
+            results.textContent = Winner + " Score: " + playerScore + "-" + computerScore;
     }
 
-    function output(value) {
-      const para = document.createElement('p');
-      document.body.appendChild(para);
-      para.textContent = 'Value: ' + value;
+    function ResetGame() {
+        computerScore = 0;
+        playerScore = 0;
+        console.log("The game has been reset. Score: " + playerScore + "-" + computerScore)
+        results.textContent = "The game has been reset. Score: " + playerScore + "-" + computerScore;
     }
+    
+    document.getElementById('rock').addEventListener('click', () => playerPlays("Rock"));
+    document.getElementById('paper').addEventListener('click', () => playerPlays("Paper"));
+    document.getElementById('scissors').addEventListener('click', () => playerPlays("Scissors"));
+    document.getElementById('Reset').addEventListener('click', ResetGame);
+
+    const container = document.querySelector('#container');
+    const results = document.createElement('p');
+    results.classList.add('results');
+    container.appendChild(results);
+
   </script>
 </body>
 </html>
